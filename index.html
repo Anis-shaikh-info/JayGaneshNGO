@@ -1137,7 +1137,7 @@
                 selectedAmount = customAmount;
                 donationOptions.forEach(opt => opt.classList.remove('selected'));
                 donateBtn.style.display = 'inline-block';
-                processDonation(selectedAmount);
+                redirectToPayment(selectedAmount);
             } else {
                 alert('Please enter a valid donation amount.');
             }
@@ -1145,47 +1145,23 @@
 
         donateBtn.addEventListener('click', function() {
             if (selectedAmount > 0) {
-                processDonation(selectedAmount);
+                redirectToPayment(selectedAmount);
             }
         });
 
-        // Razorpay Integration
-        function processDonation(amount) {
-            // In a real implementation, you would make an API call to your server
-            // to create an order and get the Razorpay options
+        // Function to redirect to Razorpay payment page
+        function redirectToPayment(amount) {
+            // Your Razorpay payment link with amount parameter
+            // Convert amount to paise (1 INR = 100 paise)
+            const amountInPaise = amount * 100;
             
-            // This is a mock implementation - replace with actual Razorpay integration
-            const options = {
-                "key": "rzp_test_YOUR_KEY_HERE", // Replace with your Razorpay key
-                "amount": amount * 100, // Amount in paise
-                "currency": "INR",
-                "name": "Jay Ganesh Samajik Bhoudeshiy Sanstha",
-                "description": "Donation for Social Cause",
-                "image": "https://example.com/your_logo.jpg", // Add your logo
-                "handler": function(response) {
-                    // This function runs after successful payment
-                    alert('Thank you for your donation! Your payment ID is: ' + response.razorpay_payment_id);
-                    // You would typically send this to your server for verification
-                },
-                "prefill": {
-                    "name": "",
-                    "email": "",
-                    "contact": ""
-                },
-                "notes": {
-                    "address": "Donation for Jay Ganesh Samajik Bhoudeshiy Sanstha"
-                },
-                "theme": {
-                    "color": "#3498db"
-                }
-            };
+            // Redirect to your Razorpay payment page
+            // Using the link you provided: https://rzp.io/rzp/Ijl9wkv5
+            // Adding amount as parameter
+            window.location.href = `https://rzp.io/rzp/Ijl9wkv5?amount=${amountInPaise}&currency=INR`;
             
-            // In a real implementation, you would create a Razorpay instance
-            // const rzp = new Razorpay(options);
-            // rzp.open();
-            
-            // For demo purposes, we'll show a success message
-            alert(`Thank you for your donation of ₹${amount}! In a real implementation, you would be redirected to Razorpay payment gateway.`);
+            // If the above doesn't work, try this alternative format:
+            // window.location.href = `https://rzp.io/l/Ijl9wkv5?amount=${amount}`;
             
             // Reset donation selection
             donationOptions.forEach(opt => opt.classList.remove('selected'));
